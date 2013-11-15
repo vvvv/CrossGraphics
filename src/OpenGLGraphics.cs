@@ -25,7 +25,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenTK;
-using OpenTK.Graphics.ES11;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
@@ -131,13 +132,13 @@ namespace CrossGraphics.OpenGL
 			//
 			// Draw
 			//
-			GL.Enable (All.Blend);
-			GL.BlendFunc (All.SrcAlpha, All.OneMinusSrcAlpha);
+			GL.Enable (EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-			GL.Disable (All.Texture2D);
-			GL.EnableClientState (All.VertexArray);
-			GL.EnableClientState (All.TextureCoordArray);
-			GL.EnableClientState (All.ColorArray);
+            GL.Disable(EnableCap.Texture2D);
+			GL.EnableClientState (ArrayCap.VertexArray);
+            GL.EnableClientState(ArrayCap.TextureCoordArray);
+            GL.EnableClientState(ArrayCap.ColorArray);
 
 			var boundTexture = default (OpenGLTexture);
 
@@ -150,37 +151,41 @@ namespace CrossGraphics.OpenGL
 				if (boundBufferIndex != c.BufferIndex) {
 					boundBufferIndex = c.BufferIndex;
 					var b = _buffers[c.BufferIndex];
-					GL.VertexPointer (2, All.Float, 0, b.Positions);
-					GL.TexCoordPointer (2, All.Float, 0, b.TexCoords);
-					GL.ColorPointer (4, All.UnsignedByte, 0, b.Colors);
+					GL.VertexPointer (2, VertexPointerType.Float, 0, b.Positions);
+					GL.TexCoordPointer (2, TexCoordPointerType.Float, 0, b.TexCoords);
+					GL.ColorPointer (4, ColorPointerType.UnsignedByte, 0, b.Colors);
 				}
 
-				if (boundTexture != c.Texture) {
-					if (boundTexture == null && c.Texture != null) {
-						GL.Enable (All.Texture2D);
-					}
-					else if (boundTexture != null && c.Texture == null) {
-						GL.Disable (All.Texture2D);
-					}
+                if (boundTexture != c.Texture)
+                {
+                    if (boundTexture == null && c.Texture != null)
+                    {
+                        GL.Enable(EnableCap.Texture2D);
+                    }
+                    else if (boundTexture != null && c.Texture == null)
+                    {
+                        GL.Disable(EnableCap.Texture2D);
+                    }
 
-					boundTexture = c.Texture;
-					if (boundTexture != null) {
-						boundTexture.Bind ();
-					}
-				}
+                    boundTexture = c.Texture;
+                    if (boundTexture != null)
+                    {
+                        boundTexture.Bind();
+                    }
+                }
 
 				if (c.Operation == All.Lines) {
 					var w = _buffers[c.BufferIndex].Positions[c.Offset + 2].X;
 					GL.LineWidth (w);
 				}
 
-				GL.DrawArrays (c.Operation, c.Offset, c.NumVertices);
+                GL.DrawArrays ((BeginMode)c.Operation, c.Offset, c.NumVertices);
 			}
 
-			GL.DisableClientState (All.VertexArray);
-			GL.DisableClientState (All.TextureCoordArray);
-			GL.DisableClientState (All.ColorArray);
-			GL.Disable (All.Texture2D);
+			GL.DisableClientState (ArrayCap.VertexArray);
+            GL.DisableClientState(ArrayCap.TextureCoordArray);
+            GL.DisableClientState(ArrayCap.ColorArray);
+			GL.Disable (EnableCap.Texture2D);
 
 #if PROFILE
 			_pDrawTime += Tic ();
@@ -659,7 +664,13 @@ namespace CrossGraphics.OpenGL
 		}
 		
 		#endregion
-	}
+
+
+        public void Clear(Color c)
+        {
+            
+        }
+    }
 			
 	public enum OpenGLShapeType : int
 	{
@@ -1304,25 +1315,25 @@ namespace CrossGraphics.OpenGL
 		protected abstract void CallTexImage2D ();
 		protected void TexImage2D (IntPtr data)
 		{
-			GL.TexImage2D (All.Texture2D, 0, (int)All.Alpha, Width, Height, 0, All.Alpha, All.UnsignedByte, data);
+			GL.TexImage2D (TextureTarget.Texture2D, 0, PixelInternalFormat.Alpha, Width, Height, 0, PixelFormat.Alpha, PixelType.UnsignedByte, data);
 		}
 
 		public void Bind ()
 		{
 			if (Id == 0 || !_valid) {
 				if (Id == 0) {
-					GL.GenTextures (1, ref Id);
+					GL.GenTextures (1, out Id);
 				}
-				GL.BindTexture (All.Texture2D, Id);
-				GL.TexParameter (All.Texture2D, All.TextureMinFilter, (int)All.Linear);
-				GL.TexParameter (All.Texture2D, All.TextureMagFilter, (int)All.Linear);
-				GL.TexParameter (All.Texture2D, All.TextureWrapS, (int)All.ClampToEdge);
-				GL.TexParameter (All.Texture2D, All.TextureWrapT, (int)All.ClampToEdge);
+				GL.BindTexture (TextureTarget.Texture2D, Id);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)All.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)All.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)All.ClampToEdge);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)All.ClampToEdge);
 				CallTexImage2D ();
 				_valid = true;
 			}
 			else {
-				GL.BindTexture (All.Texture2D, Id);
+                GL.BindTexture(TextureTarget.Texture2D, Id);
 			}
 		}
 
@@ -1649,7 +1660,7 @@ namespace CrossGraphics.OpenGL
 				// and whatever the renderer can handle.
 				//
 				var maxSize = 0;
-				GL.GetInteger (All.MaxTextureSize, ref maxSize);
+				GL.GetInteger (GetPName.MaxTextureSize, out maxSize);
 				maxSize = Math.Min (MaxTextureSize, maxSize);
 
 				//
