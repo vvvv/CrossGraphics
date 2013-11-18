@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClockOpenGL", "ClockOpenGL.csproj", "{90762BBE-CB23-42FF-9D3E-486D2F6CA485}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK", "..\..\..\..\opentk\Source\OpenTK\OpenTK.csproj", "{A37A7E14-0000-0000-0000-000000000000}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Documentation|Any CPU = Documentation|Any CPU
+		Nsis|Any CPU = Nsis|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Documentation|Any CPU.ActiveCfg = Debug|Any CPU
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Documentation|Any CPU.Build.0 = Debug|Any CPU
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Nsis|Any CPU.ActiveCfg = Release|Any CPU
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Nsis|Any CPU.Build.0 = Release|Any CPU
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90762BBE-CB23-42FF-9D3E-486D2F6CA485}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Documentation|Any CPU.Build.0 = Documentation|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Nsis|Any CPU.ActiveCfg = Nsis|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Nsis|Any CPU.Build.0 = Nsis|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
