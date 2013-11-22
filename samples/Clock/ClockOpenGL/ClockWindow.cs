@@ -107,15 +107,6 @@ namespace CrossGraphics.OpenGL
                 return c;
             }
 
-            public override void EndRendering(IGraphics g)
-            {
-                base.EndRendering(g);
-                var dg = g as XamlGraphics;
-                if (dg != null)
-                {
-                    dg._canvas.Dispose();
-                }
-            }
 
             protected unsafe override void CallTexImage2D()
             {
