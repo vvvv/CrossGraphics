@@ -41,6 +41,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -59,8 +60,8 @@
     <Compile Include="..\..\..\src\OpenGLGraphics.cs">
       <Link>OpenGLGraphics.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\src\System.Drawing.cs">
-      <Link>System.Drawing.cs</Link>
+    <Compile Include="..\..\..\src\XamlGraphics.cs">
+      <Link>XamlGraphics.cs</Link>
     </Compile>
     <Compile Include="..\Clock\Clock.cs">
       <Link>Clock.cs</Link>
@@ -88,10 +89,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

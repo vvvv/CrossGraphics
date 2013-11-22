@@ -9,6 +9,12 @@ using OpenTK.Audio.OpenAL;
 using OpenTK.Input;
 using CrossGraphics.OpenGL;
 
+
+using System.Drawing;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows;
+using System.Windows.Media.Imaging;
 namespace CrossGraphics.OpenGL
 {
     class ClockWindow : GameWindow
@@ -74,23 +80,83 @@ namespace CrossGraphics.OpenGL
 
             public CrossGraphics.IImage ImageFromFile(string path)
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
         class MyOpenGlTexture : OpenGLTexture
         {
+            Canvas _canvas;
+            int w;
+            int h;
+
             public MyOpenGlTexture(int width, int height)
-                : base(width, height) { }
+                : base(width, height) 
+            {
+                _canvas = new Canvas() { Width = width, Height = height };
+                w = width;
+                h = height;
+            }
 
             public override CrossGraphics.IGraphics BeginRendering()
             {
-                return ClockWindow._graphics;
+
+                var c = new XamlGraphics(_canvas);
+                c.BeginDrawing();
+                c.BeginEntity(this);
+                return c;
             }
 
-            protected override void CallTexImage2D()
+            public override void EndRendering(IGraphics g)
             {
-                //throw new NotImplementedException();
+                base.EndRendering(g);
+                var dg = g as XamlGraphics;
+                if (dg != null)
+                {
+                    dg._canvas.Dispose();
+                }
+            }
+
+            protected unsafe override void CallTexImage2D()
+            {
+                // Save current canvas transform
+                Transform transform = _canvas.LayoutTransform;
+                // reset current transform (in case it is scaled or rotated)
+                _canvas.LayoutTransform = null;
+
+                // Get the size of canvas
+                System.Windows.Size size = new System.Windows.Size(_canvas.Width, _canvas.Height);
+                // Measure and arrange the surface
+                // VERY IMPORTANT
+                _canvas.Measure(size);
+                _canvas.Arrange(new Rect(size));
+
+                
+                // Create a render bitmap and push the surface to it
+                RenderTargetBitmap renderBitmap =
+                  new RenderTargetBitmap(
+                    w,
+                    h,
+                    96d,
+                    96d,
+                    PixelFormats.Default);
+                renderBitmap.Render(_canvas);
+                var b = renderBitmap.Format.BitsPerPixel / 8;
+
+                
+                IntPtr data;
+
+                var arr = new byte[w * h * b];
+                fixed (byte* p = arr)
+                {
+                    data = (IntPtr)p;
+                    //data = (IntPtr)(*arr);
+                    renderBitmap.CopyPixels(new Int32Rect(0, 0, w, h), data, w * h * b, w * b);
+
+                    //Bitmap.LockBits(new global::System.Drawing.Rectangle(0, 0, Width, Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.DontCare);
+                    TexImage2D(data);
+                    //renderBitmap.UnlockBits(data);                    
+                }                           
             }
         }
 

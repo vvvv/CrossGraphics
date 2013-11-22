@@ -1315,8 +1315,9 @@ namespace CrossGraphics.OpenGL
 		protected abstract void CallTexImage2D ();
 		protected void TexImage2D (IntPtr data)
 		{
-			GL.TexImage2D (TextureTarget.Texture2D, 0, PixelInternalFormat.Alpha, Width, Height, 0, PixelFormat.Alpha, PixelType.UnsignedByte, data);
-		}
+            //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Alpha, Width, Height, 0, PixelFormat.Alpha, PixelType.UnsignedByte, data);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Srgb8, Width, Height, 0, PixelFormat.AbgrExt, PixelType.UnsignedByte, data);
+        }
 
 		public void Bind ()
 		{

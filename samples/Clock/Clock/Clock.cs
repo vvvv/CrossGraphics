@@ -43,10 +43,10 @@ namespace Clock
 					center.Y + 0.9f * r * (float)Math.Sin (angle),
 					7);
 			}
-            //g.SetFont (LabelFont);
-            //var textWidth = g.GetFontMetrics ().StringWidth ("Cross Graphics");
-            //g.SetClippingRect(0, 0, 400, 300);
-            //g.DrawString ("Cross Graphics", center.X - textWidth / 2, center.Y + 0.25f * r);
+            g.SetFont(LabelFont);
+            var textWidth = g.GetFontMetrics().StringWidth("Cross Graphics");
+            g.SetClippingRect(0, 0, 400, 300);
+            g.DrawString("Cross Graphics", center.X - textWidth / 2, center.Y + 0.25f * r);
             g.SetClippingRect(0, 0, Width, Height);
 			//
 			// Draw the hour hand
